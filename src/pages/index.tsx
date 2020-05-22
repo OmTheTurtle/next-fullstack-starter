@@ -16,7 +16,7 @@ import { DarkModeSwitch } from '../components/DarkModeSwitch'
 import { CTA } from '../components/CTA'
 import { Footer } from '../components/Footer'
 
-const Index = () => (
+const Index: React.FC = () => (
   <Container>
     <Hero />
     <Main>

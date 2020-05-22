@@ -2,7 +2,7 @@ import { Link as ChakraLink, Button } from '@chakra-ui/core'
 
 import { Container } from './Container'
 
-export const CTA = () => (
+export const CTA: React.FC = () => (
   <Container
     flexDirection="row"
     position="fixed"
