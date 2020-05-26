@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { Button, Heading, Input, Link, Stack, Text } from '@chakra-ui/core'
+import NextLink from 'next/link'
 import Router from 'next/router'
+import { useEffect, useState } from 'react'
+
 import { useUser } from '../lib/hooks'
-import { Stack, Input, Button, Link } from '@chakra-ui/core'
-import Navbar from '../components/Navbar'
 
 export default function LoginPage() {
   const [user, { mutate }] = useUser()
@@ -12,7 +13,7 @@ export default function LoginPage() {
     e.preventDefault()
 
     const body = {
-      username: e.currentTarget.username.value,
+      email: e.currentTarget.email.value,
       password: e.currentTarget.password.value,
     }
     const res = await fetch('/api/login', {
@@ -26,7 +27,7 @@ export default function LoginPage() {
       // set user to useSWR state
       mutate(userObj)
     } else {
-      setErrorMsg('Incorrect username or password. Try better!')
+      setErrorMsg('Incorrect email or password. Try better!')
     }
   }
 
@@ -37,16 +38,22 @@ export default function LoginPage() {
 
   return (
     <>
-      <Navbar />
-      <h1>Login to Example</h1>
-      {errorMsg && <p className='error'>{errorMsg}</p>}
+      <Heading as='h1'>Login to Example</Heading>
+      {errorMsg && <Text color='tomato'>{errorMsg}</Text>}
       <form onSubmit={onSubmit}>
-        <Stack spacing={3}>
-          <Input variant='outline' placeholder='username' name='username' />
-          <Input variant='outline' placeholder='password' name='password' type='password' />
+        <Stack spacing={3} shouldWrapChildren>
+          <Input variant='outline' placeholder='email' name='email' />
+          <Input
+            variant='outline'
+            placeholder='password'
+            name='password'
+            type='password'
+          />
+          <Button type='submit'>Login</Button>
+          <NextLink href='/signup'>
+            <Link>I don't have an account</Link>
+          </NextLink>
         </Stack>
-        <Button type='submit'>Login</Button>
-        <Link href='/'>I don't have an account</Link>
       </form>
     </>
   )

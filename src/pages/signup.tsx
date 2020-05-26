@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react'
+import { Button, Heading, Input, Link, Stack, Text } from '@chakra-ui/core'
+import NextLink from 'next/link'
 import Router from 'next/router'
-import Link from 'next/link'
+import { useEffect, useState } from 'react'
+
 import { useUser } from '../lib/hooks'
 
 export default function SignupPage() {
@@ -11,9 +13,9 @@ export default function SignupPage() {
     e.preventDefault()
 
     const body = {
-      username: e.currentTarget.username.value,
       password: e.currentTarget.password.value,
-      name: e.currentTarget._name.value,
+      name: e.currentTarget.username.value,
+      email: e.currentTarget.email.value,
     }
 
     if (body.password !== e.currentTarget.rpassword.value) {
@@ -43,34 +45,44 @@ export default function SignupPage() {
 
   return (
     <>
-      <h1>Sign up to Example</h1>
-      {errorMsg && <p className="error">{errorMsg}</p>}
-      <div className="form-container">
-        <form onSubmit={onSubmit}>
-          <label>
-            <span>Username</span>
-            <input type="text" name="username" required />
-          </label>
-          <label>
-            <span>Password</span>
-            <input type="password" name="password" required />
-          </label>
-          <label>
-            <span>Repeat password</span>
-            <input type="password" name="rpassword" required />
-          </label>
-          <label>
-            <span>Name</span>
-            <input type="text" name="_name" required />
-          </label>
-          <div className="submit">
-            <button type="submit">Sign up</button>
-            <Link href="/login">
-              <a>I already have an account</a>
-            </Link>
-          </div>
-        </form>
-      </div>
+      <Heading as='h1'>Sign up to Example</Heading>
+      {errorMsg && <Text color='tomato'>{errorMsg}</Text>}
+      <form onSubmit={onSubmit}>
+        <Stack spacing={3} shouldWrapChildren>
+          <Input
+            variant='outline'
+            type='text'
+            name='username'
+            placeholder='Name'
+            isRequired
+          />
+          <Input
+            variant='outline'
+            type='text'
+            name='email'
+            placeholder='Email'
+            isRequired
+          />
+          <Input
+            variant='outline'
+            type='password'
+            name='password'
+            placeholder='Password'
+            isRequired
+          />
+          <Input
+            variant='outline'
+            type='password'
+            name='rpassword'
+            placeholder='Repeat password'
+            isRequired
+          />
+          <Button type='submit'>Sign up</Button>
+          <NextLink href='/login'>
+            <Link>I already have an account</Link>
+          </NextLink>
+        </Stack>
+      </form>
     </>
   )
 }

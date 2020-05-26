@@ -1,31 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { Button } from '@chakra-ui/core'
 import Router from 'next/router'
+import { useEffect } from 'react'
+
 import { useUser } from '../lib/hooks'
 
-function ProfileEdit() {
-  const [user, { mutate }] = useUser()
-  const nameRef = useRef<HTMLInputElement>()
-
-  useEffect(() => {
-    if (!user) return
-    nameRef.current.value = user.name
-  }, [user])
-
-  async function handleEditProfile(e) {
-    e.preventDefault()
-
-    const body = {
-      name: nameRef.current.value,
-    }
-    const res = await fetch(`/api/user`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    })
-    const updatedUser = await res.json()
-
-    mutate(updatedUser)
-  }
+export default function ProfilePage() {
+  const [user, { loading, mutate }] = useUser()
 
   async function handleDeleteProfile() {
     const res = await fetch(`/api/user`, {
@@ -38,38 +18,6 @@ function ProfileEdit() {
     }
   }
 
-  return (
-    <>
-      <div className="form-container">
-        <form onSubmit={handleEditProfile}>
-          <label>
-            <span>Name</span>
-            <input type="text" ref={nameRef} required />
-          </label>
-          <div className="submit">
-            <button type="submit">Update profile</button>
-            <a role="button" className="delete" onClick={handleDeleteProfile}>
-              Delete profile
-            </a>
-          </div>
-        </form>
-      </div>
-      <style jsx>{`
-        .delete {
-          color: #f44336;
-          cursor: pointer;
-        }
-        .delete:hover {
-          color: #b71c1c;
-        }
-      `}</style>
-    </>
-  )
-}
-
-export default function ProfilePage() {
-  const [user, { loading }] = useUser()
-
   useEffect(() => {
     // redirect user to login if not authenticated
     if (!loading && !user) Router.replace('/login')
@@ -81,7 +29,9 @@ export default function ProfilePage() {
       {user && (
         <>
           <p>Your profile: {JSON.stringify(user)}</p>
-          <ProfileEdit />
+          <Button color='tomato' onClick={handleDeleteProfile}>
+            Delete profile
+          </Button>
         </>
       )}
     </>

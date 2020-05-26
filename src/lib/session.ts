@@ -1,5 +1,5 @@
-import { parse, serialize } from 'cookie'
 import Iron from '@hapi/iron'
+import { parse, serialize } from 'cookie'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default function session({ name, secret, cookie: cookieOpts }) {
@@ -20,7 +20,7 @@ export default function session({ name, secret, cookie: cookieOpts }) {
 
     // We are proxying res.end to commit the session cookie
     const oldEnd = res.end
-    res.end = async function resEndProxy(...args) {
+    res.end = async function resEndProxy(...args: any[]) {
       if (res.finished || res.writableEnded || res.headersSent) return
       // sealing the cookie to be sent to client
       const sealed = await Iron.seal(req.session, secret, Iron.defaults)

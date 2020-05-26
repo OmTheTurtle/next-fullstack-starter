@@ -1,16 +1,22 @@
+import { PrismaClient } from '@prisma/client'
 import nextConnect from 'next-connect'
+
 import auth from '../../middleware/auth'
-import { deleteUser, updateUserByUsername } from '../../lib/db'
+
 const handler = nextConnect()
+const db = new PrismaClient()
 
 handler
   .use(auth)
-  .get((req, res) => {
+  .get(async (req, res) => {
     // You do not generally want to return the whole user object
     // because it may contain sensitive field such as !!password!! Only return what needed
-    // const { name, username, favoriteColor } = req.user
-    // res.json({ user: { name, username, favoriteColor } })
-    res.json({ user: req.user })
+    if (req.user) {
+      const { id, name, email } = req.user
+      res.json({ user: { id, name, email } })
+    } else {
+      res.json(null)
+    }
   })
   .use((req, res, next) => {
     // handlers after this (PUT, DELETE) all require an authenticated user
@@ -21,13 +27,8 @@ handler
       next()
     }
   })
-  .put((req, res) => {
-    const { name } = req.body
-    const user = updateUserByUsername(req, req.user.username, { name })
-    res.json({ user })
-  })
-  .delete((req, res) => {
-    deleteUser(req)
+  .delete(async (req, res) => {
+    await db.user.delete({ where: { id: req.user.id } })
     req.logOut()
     res.status(204).end()
   })

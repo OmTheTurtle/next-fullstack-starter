@@ -1,3 +1,9 @@
-import { Flex } from '@chakra-ui/core'
+import { Flex, Text } from '@chakra-ui/core'
 
-export const Footer: React.FC = (props) => <Flex as="footer" py="8rem" {...props} />
+const Footer: React.FC = (props) => (
+  <Flex as='footer' py='8rem'>
+    <Text>Next ❤️ Chakra</Text>
+  </Flex>
+)
+
+export default Footer

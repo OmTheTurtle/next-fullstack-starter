@@ -1,8 +1,4 @@
-import {
-  Flex,
-  Link,
-  Button
-} from '@chakra-ui/core'
+import { Flex, Link, Stack } from '@chakra-ui/core'
 import NextLink from 'next/link'
 import { useUser } from '../lib/hooks'
 import { DarkModeSwitch } from './DarkModeSwitch'
@@ -23,30 +19,28 @@ export default function Navbar() {
       justifyContent='space-between'
       alignItems='center'
     >
-      <Flex flexDirection='row' justifyContent='center' alignItems='center'>
+      <Stack shouldWrapChildren spacing={8} direction='row'>
         <NextLink href='/'>
           <Link>Home</Link>
         </NextLink>
         {user ? (
-          <>
+          <Stack shouldWrapChildren spacing={8} direction='row'>
             <NextLink href='/profile'>
               <Link>Profile</Link>
             </NextLink>
-            <Button onClick={handleLogout} mr={2}>
-              Logout
-            </Button>
-          </>
+            <Link onClick={handleLogout}>Logout</Link>
+          </Stack>
         ) : (
-          <>
+          <Stack shouldWrapChildren spacing={8} direction='row'>
             <NextLink href='/signup'>
               <Link>Sign up</Link>
             </NextLink>
             <NextLink href='/login'>
               <Link>Login</Link>
             </NextLink>
-          </>
+          </Stack>
         )}
-      </Flex>
+      </Stack>
       <DarkModeSwitch />
     </Flex>
   )

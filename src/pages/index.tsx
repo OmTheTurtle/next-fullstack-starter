@@ -1,4 +1,3 @@
-import { withTheme } from 'emotion-theming'
 import {
   Link as ChakraLink,
   Text,
@@ -10,11 +9,7 @@ import {
 } from '@chakra-ui/core'
 
 import { Hero } from '../components/Hero'
-import { Container } from '../components/Container'
 import { Main } from '../components/Main'
-import { CTA } from '../components/CTA'
-import { Footer } from '../components/Footer'
-import Navbar from '../components/Navbar'
 import useSWR from 'swr'
 import { useUser, fetcher } from '../lib/hooks'
 
@@ -27,7 +22,7 @@ function UserList() {
       {!!users?.length && (
         <ul>
           {users.map((user) => (
-            <li key={user.username}>{JSON.stringify(user)}</li>
+            <li key={user.id}>{JSON.stringify(user)}</li>
           ))}
         </ul>
       )}
@@ -35,11 +30,10 @@ function UserList() {
   )
 }
 
-const Index: React.FC = () => {
+const Index = () => {
   const [user] = useUser()
   return (
-    <Container>
-      <Navbar />
+    <>
       <Hero />
       <Main>
         <Text>
@@ -73,12 +67,8 @@ const Index: React.FC = () => {
         {user && <p>Currently logged in as: {JSON.stringify(user)}</p>}
         <UserList />
       </Main>
-      <Footer>
-        <Text>Next ❤️ Chakra</Text>
-      </Footer>
-      <CTA />
-    </Container>
+    </>
   )
 }
 
-export default withTheme(Index)
+export default Index

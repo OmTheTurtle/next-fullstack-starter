@@ -1,11 +1,13 @@
 /// <reference types="next" />
 /// <reference types="next/types/global" />
 
+import { User } from '@prisma/client'
+
 declare module "http" {
   interface IncomingMessage {
     session: any
-    user: any
+    user: User
     logOut: () => void
-    logIn: (user: any, err: Function) => void
+    logIn: (user: User, err: Function) => void
   }
 }
